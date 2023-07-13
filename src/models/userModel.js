@@ -5,11 +5,11 @@ const userSchema = new Schema(
     firstName: { type: String, required: true, min: 2, max: 100 },
     lastName: { type: String, required: true, min: 2, max: 100 },
     placeOfBirth: { type: String, required: true, min: 2, max: 50 },
-    dataOfBirth: { type: Date, required: true },
+    dateOfBirth: { type: Date, required: true },
     gender: { type: String, required: true },
   },
   { versionKey: false }
 );
 
-const userModel = model("user", userSchema);
+const userModel = model("User", userSchema);
 export default userModel;
