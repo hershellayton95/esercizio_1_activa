@@ -66,25 +66,40 @@ export const findUserById = async (req, res) => {
 
     if (!user) throw new Error("User doesn't exist");
 
-    return res.status(200).json(user);
+    return res
+      .status(200)
+      .json({ status: 200, message: "User found", data: user });
   } catch (e) {
     handleError(e, res);
   }
 };
 
 export const getUsers = async (req, res) => {
-  const birthPlace = req.query.birthPlace;
+  const birthPlace = req.query.birthPlace || "";
+  const limit = req.query.limit ? parseInt(req.query.limit) : 0;
+  const page = req.query.page ? parseInt(req.query.page) : 0;
+
+  const responseJson = { status: 200, message: "User(s) found" };
 
   let users = null;
 
   try {
-    birthPlace
-      ? (users = await userModel.find({ placeOfBirth: birthPlace }))
-      : (users = await userModel.find());
+    const query = birthPlace ? { placeOfBirth: birthPlace } : {};
+    users = await userModel
+      .find(query)
+      .limit(limit)
+      .skip(limit * page);
 
-    if (users.length == 0) throw new Error("No user(s) in the list");
+    if (users.length === 0) throw new Error("No user(s) in the list");
 
-    return res.status(200).json(users);
+    if (limit) {
+      responseJson.page = page;
+      responseJson.limit = limit;
+    }
+
+    responseJson.data = users;
+
+    return res.status(200).json(responseJson);
   } catch (e) {
     handleError(e, res);
   }

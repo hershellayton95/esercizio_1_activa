@@ -2,7 +2,7 @@ import { isValidObjectId } from "mongoose";
 
 export const handleError = (e, res) => {
   let statusCode = 500;
-  let message = "Server Side Error";
+  let message = e.message || "Server Side Error";
 
   if (
     e.message.includes("User doesn't exist") ||
