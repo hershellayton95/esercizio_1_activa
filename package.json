@@ -1,6 +1,6 @@
 {
   "name": "esercizio_1_activa",
-  "version": "0.0.1-SNAPSHOT",
+  "version": "0.0.1-#00006-SNAPSHOT",
   "description": "esercizio Il servizio deve esporre le classiche operazioni CRUD",
   "main": "./src/server.js",
   "type": "module",
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/hershellayton95/esercizio_1_activa#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mongoose": "^7.3.3",
