@@ -3,9 +3,11 @@ import userRoutes from "./routes/userRoute.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 import { swaggerSpec } from "./configurations/swaggerConfig.js";
+import cors from "cors";
 
 const app = express();
 //plugin
+app.use(cors());
 app.use(express.json());
 
 //routes
