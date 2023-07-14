@@ -1,6 +1,6 @@
 {
   "name": "esercizio_1_activa",
-  "version": "0.0.1-SNAPSHOT-RELEASE",
+  "version": "0.0.1",
   "description": "esercizio Il servizio deve esporre le classiche operazioni CRUD",
   "main": "./src/server.js",
   "type": "module",
