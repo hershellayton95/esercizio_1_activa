@@ -2,7 +2,7 @@ import { isValidObjectId } from "mongoose";
 
 export const handleError = (e, res) => {
   let statusCode = 500;
-  let message = e.message || "Server Side Error";
+  let message = "Server Side Error";
 
   if (
     e.message.includes("User doesn't exist") ||
@@ -23,7 +23,16 @@ export const handleError = (e, res) => {
 };
 
 export const validateObjectId = (id) => {
-  if (!isValidObjectId(id)) {
-    throw new Error("User doesn't exist");
+  if (!isValidObjectId(id)) throw new Error("User doesn't exist");
+};
+
+export const dateFormatValidator = (body) => {
+  const regEx = /^\d{4}-\d{2}-\d{2}$/;
+  const extendedRegEx = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+  if (body.dateOfBirth && !extendedRegEx.test(body.dateOfBirth)) {
+    if (regEx.test(body.dateOfBirth)) return;
+    throw new Error(
+      "User validation failed: Birthday should be in 'yyyy-mm-dd' or 'yyyy-mm-ddThh:mm:ss.nnnZ' format"
+    );
   }
 };

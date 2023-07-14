@@ -1,9 +1,15 @@
 import userModel from "../models/userModel.js";
-import { handleError, validateObjectId } from "../service/errorService.js";
+import {
+  handleError,
+  dateFormatValidator,
+  validateObjectId,
+} from "../service/errorService.js";
 
 export const createUser = async (req, res) => {
   const reqUser = req.body;
   try {
+    dateFormatValidator(reqUser);
+
     const user = await userModel.create(reqUser);
 
     return res
@@ -16,9 +22,11 @@ export const createUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   const userId = req.params.id;
+  const reqUser = req.body;
 
   try {
     validateObjectId(userId);
+    dateFormatValidator(reqUser);
 
     const result = await userModel.updateOne({ _id: userId }, req.body);
 
