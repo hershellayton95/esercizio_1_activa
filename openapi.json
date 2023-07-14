@@ -1,0 +1,692 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Exsercise 1 Activa Express API with Swagger",
+    "version": "0.0.1",
+    "description": "This is a simple CRUD API application made with Express and documented with Swagger",
+    "contact": {
+      "name": "hershellayton95",
+      "url": "https://github.com/hershellayton95"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "User",
+      "description": "The user managing API"
+    }
+  ],
+  "paths": {
+    "/user": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Create a new user",
+        "operationId": "createUser",
+        "requestBody": {
+          "description": "Create a new user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The response json about new user created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "placeOfBirth": {
+                          "type": "string"
+                        },
+                        "dateOfBirth": {
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "gender": {
+                          "type": "string"
+                        },
+                        "_id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "status": 201,
+                    "message": "New user created",
+                    "data": {
+                      "firstName": "Filippo",
+                      "lastName": "Di Marco",
+                      "placeOfBirth": "Palermo",
+                      "dateOfBirth": "1995-07-05T22:01:00.000Z",
+                      "gender": "male",
+                      "_id": "64b0156f3268c7fe94eeb119"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The response json about validation failed or for a missing field",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "status": 400,
+                    "message": "User validation failed: dateOfBirth: Path `dateOfBirth` is required"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server side error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "status": 500,
+                    "message": "Server side error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get all users or part of them",
+        "operationId": "getUsers",
+        "parameters": [
+          {
+            "name": "birthPlace",
+            "in": "query",
+            "description": "Filter by the place where the user was born",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit the number of shown elements",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Organize the result in pages (Required to set limit query)",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The response json about new user created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "firstName": {
+                            "type": "string"
+                          },
+                          "lastName": {
+                            "type": "string"
+                          },
+                          "placeOfBirth": {
+                            "type": "string"
+                          },
+                          "dateOfBirth": {
+                            "type": "string",
+                            "format": "date"
+                          },
+                          "gender": {
+                            "type": "string"
+                          },
+                          "_id": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "status": 200,
+                    "message": "User(s) found",
+                    "data": {
+                      "_id": "64b0156f3268c7fe94eeb119",
+                      "firstName": "Filippo",
+                      "lastName": "Di Marco",
+                      "placeOfBirth": "Mistretta",
+                      "dateOfBirth": "1995-07-05T22:01:00.000Z",
+                      "gender": "male"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User doesn't exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "status": 404,
+                    "message": "User doesn't exist"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server side error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "status": 500,
+                    "message": "Server side error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{userId}": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Update an existent user",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "_id of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existent user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK. User updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "placeOfBirth": {
+                          "type": "string"
+                        },
+                        "dateOfBirth": {
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "gender": {
+                          "type": "string"
+                        },
+                        "_id": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "status": 200,
+                    "message": "User has been updated",
+                    "data": {
+                      "firstName": "Filippo",
+                      "lastName": "Di Marco",
+                      "placeOfBirth": "Mistretta",
+                      "dateOfBirth": "1995-07-05T22:01:00.000Z",
+                      "gender": "male",
+                      "_id": "64b0156f3268c7fe94eeb119"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The response json about validation failed or Same value(s) in the old field(s)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "status": 400,
+                    "message": "No element has been updated. Same value(s) in the old field(s)"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User doesn't exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "status": 404,
+                    "message": "No element to update. User doesn't exist"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Side Error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "status": 500,
+                    "message": "Server Side Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Delete an existent user",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "_id of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK - User updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "status": 200,
+                    "message": "User has been deleted"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User doesn't exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "status": 404,
+                    "message": "No element to delete. User doesn't exist"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server side error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "status": 500,
+                    "message": "Server side error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get a user by its id",
+        "operationId": "findUserById",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "_id of user",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK - User getted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "placeOfBirth": {
+                          "type": "string"
+                        },
+                        "dateOfBirth": {
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "gender": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "status": 200,
+                    "message": "User found",
+                    "data": {
+                      "_id": "64b0156f3268c7fe94eeb119",
+                      "firstName": "Filippo",
+                      "lastName": "Di Marco",
+                      "placeOfBirth": "Palermo",
+                      "dateOfBirth": "1995-07-05T22:01:00.000Z",
+                      "gender": "male"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User doesn't exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "status": 404,
+                    "message": "User doesn't exist"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server side error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "status": 500,
+                    "message": "Server side error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": [
+          "firstName",
+          "lastName",
+          "placeOfBirth",
+          "dateOfBirth",
+          "gender"
+        ],
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the user",
+            "example": "Filippo"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the user",
+            "example": "Di Marco"
+          },
+          "placeOfBirth": {
+            "type": "string",
+            "description": "The place where the user was born",
+            "example": "Mistretta"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date",
+            "description": "Birth day",
+            "example": "1995-07-05T22:01:00.000Z"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "male",
+              "female"
+            ],
+            "description": "User Gender",
+            "example": "male"
+          }
+        },
+        "example": {
+          "firstName": "Filippo",
+          "lastName": "Di Marco",
+          "placeOfBirth": "Palermo",
+          "dateOfBirth": "1995-07-05T22:01:00.000Z",
+          "gender": "male"
+        }
+      }
+    }
+  }
+}

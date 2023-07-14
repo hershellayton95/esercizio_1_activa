@@ -1,20 +1,22 @@
 import swaggerJSDoc from "swagger-jsdoc";
+import { readFile } from "fs/promises";
+
+const jsonPackage = JSON.parse(
+  await readFile(new URL("../../package.json", import.meta.url))
+);
+const jsonOpenAPI = JSON.parse(
+  await readFile(new URL("../../openapi.json", import.meta.url))
+);
 
 const options = {
   definition: {
-    openapi: "3.0.3",
+    ...jsonOpenAPI,
     info: {
-      title: "Exsercise 1 Activa Express API with Swagger",
-      version: "0.0.1",
-      description:
-        "This is a simple CRUD API application made with Express and documented with Swagger",
-      contact: {
-        name: "hershellayton95",
-        url: "https://github.com/hershellayton95",
-      },
+      ...jsonOpenAPI.info,
+      version: jsonPackage.version,
     },
   },
-  apis: ["./src/routes/*.js", "./src/models/*.js"],
+  apis: [],
 };
 
 export const swaggerSpec = swaggerJSDoc(options);
